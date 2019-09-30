@@ -193,6 +193,9 @@ class ChewieController extends ChangeNotifier {
       DeviceOrientation.landscapeRight,
     ],
     this.routePageBuilder = null,
+    @required this.selectedQuality,
+    @required this.quality,
+    @required this.onQualitySelected,
   }) : assert(videoPlayerController != null,
             'You must provide a controller to play a video') {
     _initialize();
@@ -215,6 +218,12 @@ class ChewieController extends ChangeNotifier {
 
   /// Whether or not to show the controls
   final bool showControls;
+
+  String selectedQuality;
+
+  final List<String> quality;
+
+  final ValueChanged<String> onQualitySelected;
 
   /// Defines customised controls. Check [MaterialControls] or
   /// [CupertinoControls] for reference.

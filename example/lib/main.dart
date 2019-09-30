@@ -23,42 +23,85 @@ class ChewieDemo extends StatefulWidget {
 
 class _ChewieDemoState extends State<ChewieDemo> {
   TargetPlatform _platform;
-  VideoPlayerController _videoPlayerController1;
-  VideoPlayerController _videoPlayerController2;
+  VideoPlayerController videoPlayerController1,
+      videoPlayerController2,
+      videoPlayerController3,
+      videoPlayerController4;
+  //VideoPlayerController _videoPlayerController2;
   ChewieController _chewieController;
+  Map<String, String> urls = {
+    "360p":
+        "https://player.vimeo.com/external/362730929.sd.mp4?s=498b307e8ffa7484e75a78ab1149227edb967066&profile_id=164",
+    "480p":
+        "https://player.vimeo.com/external/362730929.sd.mp4?s=498b307e8ffa7484e75a78ab1149227edb967066&profile_id=165",
+    "720p":
+        "https://player.vimeo.com/external/362730929.hd.mp4?s=7dddada22f5fc07aab62305884e55d843e1a480b&profile_id=174",
+    "1080p":
+        "https://player.vimeo.com/external/362730929.hd.mp4?s=7dddada22f5fc07aab62305884e55d843e1a480b&profile_id=175"
+  };
+
+  String selectedQuality = "720p";
 
   @override
   void initState() {
     super.initState();
-    _videoPlayerController1 = VideoPlayerController.network(
-        'https://flutter.github.io/assets-for-api-docs/assets/videos/butterfly.mp4');
-    _videoPlayerController2 = VideoPlayerController.network(
-        'https://www.sample-videos.com/video123/mp4/480/asdasdas.mp4');
-    _chewieController = ChewieController(
-      videoPlayerController: _videoPlayerController1,
-      aspectRatio: 3 / 2,
-      autoPlay: true,
-      looping: true,
-      // Try playing around with some of these other options:
+    videoPlayerController1 = VideoPlayerController.network(urls["1080p"]);
+    videoPlayerController2 = VideoPlayerController.network(urls["720p"]);
+    videoPlayerController3 = VideoPlayerController.network(urls["480p"]);
+    videoPlayerController4 = VideoPlayerController.network(urls["360p"]);
+    /*_videoPlayerController2 = VideoPlayerController.network(
+        'https://www.sample-videos.com/video123/mp4/480/asdasdas.mp4');*/
+    _chewieController = createController(videoPlayerController2, false);
+  }
 
-      // showControls: false,
-      // materialProgressColors: ChewieProgressColors(
-      //   playedColor: Colors.red,
-      //   handleColor: Colors.blue,
-      //   backgroundColor: Colors.grey,
-      //   bufferedColor: Colors.lightGreen,
-      // ),
-      // placeholder: Container(
-      //   color: Colors.grey,
-      // ),
-      // autoInitialize: true,
+  ChewieController createController(
+      VideoPlayerController videoPlayerController, bool autoPlay) {
+    return ChewieController(
+      videoPlayerController: videoPlayerController,
+      aspectRatio: 16 / 9,
+      autoPlay: autoPlay,
+      autoInitialize: true,
+      selectedQuality: selectedQuality,
+      quality: ["1080p", "720p", "480p", "360p"],
+      onQualitySelected: (quality) async {
+        selectedQuality = quality;
+        Duration duration =
+            await _chewieController.videoPlayerController.position;
+        _chewieController.dispose();
+        _chewieController.videoPlayerController.pause();
+        _chewieController.videoPlayerController.seekTo(Duration(seconds: 0));
+        VideoPlayerController newVideoPlayerController =
+            getVideoController(quality);
+        newVideoPlayerController.seekTo(duration);
+        _chewieController = createController(newVideoPlayerController, true);
+        setState(() {});
+      },
     );
+  }
+
+  VideoPlayerController getVideoController(String selected) {
+    if (selected == "1080p") {
+      //videoPlayerController1.seekTo(duration);
+      return videoPlayerController1;
+    } else if (selected == "720p") {
+      //videoPlayerController2.seekTo(duration);
+      return videoPlayerController2;
+    } else if (selected == "480p") {
+      //videoPlayerController3.seekTo(duration);
+      return videoPlayerController3;
+    } else {
+      //videoPlayerController4.seekTo(duration);
+      return videoPlayerController4;
+    }
   }
 
   @override
   void dispose() {
-    _videoPlayerController1.dispose();
-    _videoPlayerController2.dispose();
+    videoPlayerController1.dispose();
+    videoPlayerController2.dispose();
+    videoPlayerController3.dispose();
+    videoPlayerController4.dispose();
+    //_videoPlayerController2.dispose();
     _chewieController.dispose();
     super.dispose();
   }
@@ -67,9 +110,7 @@ class _ChewieDemoState extends State<ChewieDemo> {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: widget.title,
-      theme: ThemeData.light().copyWith(
-        platform: _platform ?? Theme.of(context).platform,
-      ),
+      theme: ThemeData.light().copyWith(platform: TargetPlatform.android),
       home: Scaffold(
         appBar: AppBar(
           title: Text(widget.title),
@@ -83,13 +124,13 @@ class _ChewieDemoState extends State<ChewieDemo> {
                 ),
               ),
             ),
-            FlatButton(
+            /* FlatButton(
               onPressed: () {
                 _chewieController.enterFullScreen();
               },
               child: Text('Fullscreen'),
-            ),
-            Row(
+            ),*/
+            /*Row(
               children: <Widget>[
                 Expanded(
                   child: FlatButton(
@@ -103,6 +144,11 @@ class _ChewieDemoState extends State<ChewieDemo> {
                           aspectRatio: 3 / 2,
                           autoPlay: true,
                           looping: true,
+                          selectedQuality: "720p",
+                          quality: ["1080p", "720p", "480p", "360p"],
+                          onQualitySelected: (quality) {
+                            print(quality);
+                          },
                         );
                       });
                     },
@@ -124,6 +170,11 @@ class _ChewieDemoState extends State<ChewieDemo> {
                           aspectRatio: 3 / 2,
                           autoPlay: true,
                           looping: true,
+                          selectedQuality: "720p",
+                          quality: ["1080p", "720p", "480p", "360p"],
+                          onQualitySelected: (quality) {
+                            print(quality);
+                          },
                         );
                       });
                     },
@@ -134,8 +185,8 @@ class _ChewieDemoState extends State<ChewieDemo> {
                   ),
                 )
               ],
-            ),
-            Row(
+            ),*/
+            /*Row(
               children: <Widget>[
                 Expanded(
                   child: FlatButton(
@@ -164,7 +215,7 @@ class _ChewieDemoState extends State<ChewieDemo> {
                   ),
                 )
               ],
-            )
+            )*/
           ],
         ),
       ),

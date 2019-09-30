@@ -41,6 +41,11 @@ class _ChewieDemoState extends State<ChewieDemo> {
         aspectRatio: 3 / 2,
         autoPlay: true,
         looping: true,
+        selectedQuality: "720p",
+        quality: ["1080p", "720p", "480p", "360p"],
+        onQualitySelected: (quality) {
+          print(quality);
+        },
         routePageBuilder: (BuildContext context, Animation<double> animation,
             Animation<double> secondAnimation, provider) {
           return AnimatedBuilder(
@@ -123,6 +128,11 @@ class _ChewieDemoState extends State<ChewieDemo> {
                           aspectRatio: 3 / 2,
                           autoPlay: true,
                           looping: true,
+                          selectedQuality: "720p",
+                          quality: ["1080p", "720p", "480p", "360p"],
+                          onQualitySelected: (quality) {
+                            print(quality);
+                          },
                         );
                       });
                     },
@@ -144,6 +154,11 @@ class _ChewieDemoState extends State<ChewieDemo> {
                           aspectRatio: 3 / 2,
                           autoPlay: true,
                           looping: true,
+                          selectedQuality: "720p",
+                          quality: ["1080p", "720p", "480p", "360p"],
+                          onQualitySelected: (quality) {
+                            print(quality);
+                          },
                         );
                       });
                     },

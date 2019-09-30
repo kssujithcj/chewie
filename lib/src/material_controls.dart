@@ -116,9 +116,27 @@ class _MaterialControlsState extends State<MaterialControls> {
                 ? Expanded(child: const Text('LIVE'))
                 : _buildPosition(iconColor),
             chewieController.isLive ? const SizedBox() : _buildProgressBar(),
-            chewieController.allowMuting
+            /*chewieController.allowMuting
                 ? _buildMuteButton(controller)
-                : Container(),
+                : Container(),*/
+          PopupMenuButton<String> (initialValue: chewieController.selectedQuality ,child: Row(children: <Widget>[
+            Text(chewieController.selectedQuality, style: TextStyle(
+              fontSize: 10,
+            ),),
+            Icon(Icons.arrow_drop_down),
+          ],),
+            onSelected: (item) {
+              chewieController.selectedQuality = item;
+              chewieController.onQualitySelected(item);
+              setState(() {});
+            },
+            itemBuilder: (BuildContext context){
+              return chewieController.quality.map((item){
+                return PopupMenuItem<String>(value: item, child: Text(item, style: TextStyle(
+                  fontSize: 10,
+                ),),);
+              }).toList();
+            },),
             chewieController.allowFullScreen
                 ? _buildExpandButton()
                 : Container(),
