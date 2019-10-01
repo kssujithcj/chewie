@@ -110,7 +110,7 @@ class _ChewieDemoState extends State<ChewieDemo> {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: widget.title,
-      theme: ThemeData.light().copyWith(platform: TargetPlatform.android),
+      //theme: ThemeData.light().copyWith(platform: TargetPlatform.android),
       home: Scaffold(
         appBar: AppBar(
           title: Text(widget.title),
